@@ -3,7 +3,7 @@
 import sys
 import threading
 import numpy
-
+import os
 
 def compute_height(n, parents):
     # Write this function
@@ -28,18 +28,24 @@ def get_distance(up, parents, height):
 
 def main():
     # implement input form keyboard and from files
-    text = input()
+    text = input().strip()
     # let user input file name to use, don't allow file names with letter a
     # account for github input inprecision
-    if text.startswith('I'):
+    if text == 'I':
         n = int(input("Elementu skaits: "))
-        parents = numpy.asarray(list(map(int,input("Vertias: ").split())))
-    elif text.startswith('F'):
+        parents = numpy.asarray(list(map(int,input("Vertibas: ").strip().split())))
+    elif text == 'F':
         name = input("Faila nosaukums: ")
         if 'a' in name:
+            print("Nepareizs nosaukums")
             return
-        fail = open("./test/" + name, "r")
-        parents = numpy.asarray(list(map(int,file.readline().split())))
+        file_path = os.path.join(os.getcwd(), 'test', name)
+        with open(file_path, 'r') as f:
+            n = int(f.readline().strip())
+            parents = numpy.asarray(list(map(int, f.readline().strip().split())))
+    else:
+        print("Nepareiza ievade")
+        return
 
     
     # input number of elements
